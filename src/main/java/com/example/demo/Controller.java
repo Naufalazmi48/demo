@@ -63,6 +63,20 @@ public class Controller {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @RequestMapping(value="/pushmessage/{id}/{message}", method=RequestMethod.GET)
+    public ResponseEntity<String> pushmessage(
+            @PathVariable("id") String userId,
+            @PathVariable("message") String textMsg
+    ){
+        TextMessage textMessage = new TextMessage(textMsg);
+        PushMessage pushMessage = new PushMessage(userId, textMessage);
+        push(pushMessage);
+
+
+        return new ResponseEntity<String>("Push message:"+textMsg+"\nsent to: "+userId, HttpStatus.OK);
+    }
+
     private void reply(ReplyMessage replyMessage) {
         try {
             lineMessagingClient.replyMessage(replyMessage).get();
@@ -84,18 +98,7 @@ public class Controller {
         reply(replyMessage);
     }
 
-    @RequestMapping(value="/pushmessage/{id}/{message}", method=RequestMethod.GET)
-    public ResponseEntity<String> pushmessage(
-            @PathVariable("id") String userId,
-            @PathVariable("message") String textMsg
-    ){
-        TextMessage textMessage = new TextMessage(textMsg);
-        PushMessage pushMessage = new PushMessage(userId, textMessage);
-        push(pushMessage);
 
-
-        return new ResponseEntity<String>("Push message:"+textMsg+"\nsent to: "+userId, HttpStatus.OK);
-    }
 
     private void push(PushMessage pushMessage){
         try {
