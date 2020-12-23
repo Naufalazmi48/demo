@@ -86,7 +86,7 @@ public class Controller {
     }
 
 
-    private void replyText(String replyToken, String messageToUser){
+    private void replyText(String replyToken, String messageToUser) {
         TextMessage textMessage = new TextMessage(messageToUser);
         ReplyMessage replyMessage = new ReplyMessage(replyToken, textMessage);
         reply(replyMessage);
